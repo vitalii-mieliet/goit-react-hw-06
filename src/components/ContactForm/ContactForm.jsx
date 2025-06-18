@@ -1,0 +1,50 @@
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { useId } from "react";
+import { contactFormValidation } from "../../validation/formValidation";
+import css from "./ContactForm.module.css";
+const ContactForm = ({ addContact }) => {
+  const nameId = useId();
+  const phoneId = useId();
+
+  const handleSubmit = (contact, actions) => {
+    addContact(contact);
+    actions.resetForm();
+  };
+  return (
+    <Formik
+      initialValues={{ name: "", phone: "" }}
+      onSubmit={handleSubmit}
+      validationSchema={contactFormValidation}
+    >
+      <Form className={css.form}>
+        <div className={css.field}>
+          <label className={css.label} htmlFor={nameId}>
+            Name
+          </label>
+          <Field className={css.input} name="name" type="text" id={nameId} />
+          <ErrorMessage
+            className={css.errorMessage}
+            name="name"
+            component={"span"}
+          />
+        </div>
+        <div className={css.field}>
+          <label className={css.label} htmlFor={phoneId}>
+            Number
+          </label>
+          <Field className={css.input} name="phone" type="phone" id={phoneId} />
+          <ErrorMessage
+            className={css.errorMessage}
+            name="phone"
+            component={"span"}
+          />
+        </div>
+        <button className={css.button} type="submit">
+          Add contact
+        </button>
+      </Form>
+    </Formik>
+  );
+};
+
+export default ContactForm;
